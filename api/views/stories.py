@@ -43,3 +43,16 @@ def update(id):
 
   db.session.commit()
   return jsonify(story.serialize()), 200
+
+@stories.route('/<id>', methods=["DELETE"]) 
+@login_required
+def delete(id):
+  profile = read_token(request)
+  story = Story.query.filter_by(id=id).first()
+
+  if story.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  db.session.delete(story)
+  db.session.commit()
+  return jsonify(message="Success"), 200
