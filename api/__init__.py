@@ -9,6 +9,7 @@ from api.models.user import User
 from api.models.profile import Profile
 from api.models.story import Story
 from api.models.character import Character
+from api.models.character import Association
 
 # ============ Import Views ============
 from api.views.auth import auth

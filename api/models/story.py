@@ -10,9 +10,14 @@ class Story(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'))
 
+    # Relationships:
+    characters = db.relationship("Character", secondary="associations")
+
     def __repr__(self):
       return f"Story('{self.id}', '{self.name}'"
 
     def serialize(self):
       story = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+      characters = [character.serialize() for character in self.characters]
+      story['characters'] = characters
       return story
