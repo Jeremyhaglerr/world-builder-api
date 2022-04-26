@@ -27,3 +27,19 @@ def show(id):
   story = Story.query.filter_by(id=id).first()
   story_data = story.serialize()
   return jsonify(story=story_data), 200
+
+@stories.route('/<id>', methods=["PUT"]) 
+@login_required
+def update(id):
+  data = request.get_json()
+  profile = read_token(request)
+  story = Story.query.filter_by(id=id).first()
+
+  if story.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  for key in data:
+    setattr(story, key, data[key])
+
+  db.session.commit()
+  return jsonify(story.serialize()), 200
