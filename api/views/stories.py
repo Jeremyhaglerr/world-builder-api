@@ -78,3 +78,7 @@ def assoc_character(story_id, character_id):
 
   story = Story.query.filter_by(id=story_id).first()
   return jsonify(story.serialize()), 201
+
+@stories.errorhandler(Exception)          
+def basic_error(err):
+  return jsonify(err=str(err)), 500
