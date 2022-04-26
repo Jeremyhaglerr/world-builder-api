@@ -17,3 +17,13 @@ def create():
   db.session.add(character)
   db.session.commit()
   return jsonify(character.serialize()), 201
+
+@characters.route('/', methods=["GET"])
+def index():
+  characters = Character.query.all()
+  return jsonify([character.serialize() for character in characters]), 201
+
+@characters.route('/<id>', methods=["GET"])
+def show(id):
+  character = Character.query.filter_by(id=id).first()
+  return jsonify(character.serialize()), 200
